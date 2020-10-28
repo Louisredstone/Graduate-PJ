@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+    <head>
+        
+        <style>
+            html,body,div,input{
+                margin:0px;
+                padding:0px;
+                border:0px;
+            }
+        </style>
+        <script type="text/javascript" language="javascript" src="../.lib/jquery.js"></script>
+        <script type="text/javascript" language="javascript">
+            function doCommand(cmd) {
+                if (cmd=="clear"){
+                    $("#output").html("");
+                }
+                else{
+                    var url = "bash.php";
+                    var data = {
+                        action: cmd
+                    };
+                    jQuery.post(url, data, (data)=>{$("#output").text($("#output").text()+"\n"+data);});
+                }
+            }
+        </script>
+    </head>
+
+<body>
+    <div id="output"></div>
+    <input type="text" onkeydown="if(event.keyCode==13){doCommand(this.value);this.value=''}" style="width:99.7%" placeholder="$>">
+
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<head>
+    <script src="../.lib/jquery.js"></script>
+    <style>
+        #dropbox{
+        border : 1px solid black;
+        margin : 10px 20px 30px 40px;
+    }
+    </style>
+    <script>
+        function GPU_start(){$.post("LeNet/LeNet_start.php", {action:"GPU"}, (data) => {});}
+        function GPU_stop(){$.post("LeNet/LeNet_stop.php", {action:"GPU"}, (data) => {});}
+        function GPU_load(){$.post("LeNet/LeNet_load.php", {action:"GPU"}, (data) => {});}
+        function GPU_save(){$.post("LeNet/LeNet_save.php", {action:"GPU"}, (data) => {});}
+        function GPU_train(){$.post("LeNet/LeNet_launch_training.php", {action:"GPU"}, (data) => {});}
+        function GPU_get_log(){
+            $.post("LeNet/LeNet_get_log.php", {action:"GPU"}, (data) => {
+                $('#GPU_log').html(data);
+            });
+        }
+        function GPU_get_recog_result(){
+            $('#GPU_recog_img').attr('src',"LeNet/cache/LeNet_GPU_recog_.png"+"?random="+new Date().getTime());
+        }
+        function GPU_get_state(){
+            $.post("LeNet/LeNet_get_state.php",{action: "GPU"}, (data) => {
+                switch(data){
+                    case "training":
+                        $('#GPU_button').hide();
+                        $("#GPU_load_button").hide();
+                        $("#GPU_save_button").hide();
+                        $("#GPU_train_button").hide();
+                        $("#GPU_log").show();
+                        $('#GPU_training_img').attr('src',"LeNet/cache/GPU_training.jpg"+"?random="+new Date().getTime());
+                        $("#GPU_training_img").show();
+                        $("#GPU_dropbox").hide();
+                        GPU_get_log();
+                    break;
+                    case "idle"://running but idle
+                        $('#GPU_button').show();
+                        $('#GPU_button').text('stop');
+                        $('#GPU_button').attr('onclick','GPU_stop();');
+                        $("#GPU_load_button").show();
+                        $("#GPU_save_button").show();
+                        $("#GPU_train_button").show();
+                        $("#GPU_log").show();
+                        $("#GPU_training_img").hide();
+                        $("#GPU_dropbox").show();
+                        GPU_get_log();
+                        GPU_get_recog_result();
+                    break;
+                    case "closed":
+                        $('#GPU_button').text('start');
+                        $('#GPU_button').attr('onclick','GPU_start();');
+                        $("#GPU_load_button").hide();
+                        $("#GPU_save_button").hide();
+                        $("#GPU_train_button").hide();
+                        $("#GPU_log").hide();
+                        $("#GPU_training_img").hide();
+                        $("#GPU_dropbox").hide();
+                    break;
+                }
+             });
+        }
+        function checkState(){
+            GPU_get_state();
+        }
+        $.ajaxSetup({async:true});
+        checkState();
+        setInterval(checkState,1000);
+    </script>
+    <script>
+        $(function(){ 
+            //阻止浏览器默认行为。 
+            $(document).on({ 
+                dragleave:function(e){    //拖离 
+                    e.preventDefault(); 
+                }, 
+                drop:function(e){  //拖后放 
+                    e.preventDefault(); 
+                }, 
+                dragenter:function(e){    //拖进 
+                    e.preventDefault(); 
+                }, 
+                dragover:function(e){    //拖来拖去 
+                    e.preventDefault(); 
+                } 
+            }); 
+
+            // var box = document.getElementById('dropbox'); //拖拽区域 
+
+            document.getElementById('GPU_dropbox').addEventListener("drop",function(e){ //此处不能用jQuery的$('#...')，addEventListener不兼容。
+                e.preventDefault(); //取消默认浏览器拖拽效果 
+                var fileList = e.dataTransfer.files; //获取文件对象 
+                //检测是否是拖拽文件到页面的操作 
+                if(fileList.length == 0){ 
+                    return false; 
+                } else if(fileList.length > 1){// 可能会一堆图一起拖过来
+                    alert("one picture a time!");
+                    return false;
+                }
+                var form = new FormData();
+                form.append("file", fileList[0]); 
+                // form.append("type","CPU");
+                $.ajax({
+                    url: 'LeNet/LeNet_fig_receiver_GPU.php',
+                    type: 'POST',
+                    cache: false,
+                    data: form,
+                    processData: false,
+                    contentType: false
+                }).done(function(res) {//CPU_recog();
+                }).fail(function(res) {//alert("fail");
+                });
+            },false); 
+        }); 
+    </script>
+</head>
+
+<body>
+    <h3>LeNet GPU</h3>
+    <div style="width:100%;float:left;font-size:small">
+        <button type="button" id="GPU_button" onclick="GPU_start();">start</button><br>
+        <button type="button" id="GPU_load_button" onclick="GPU_load();" hidden>load</button><br>
+        <button type="button" id="GPU_save_button" onclick="GPU_save();" hidden>save</button><br>
+        <button type="button" id="GPU_train_button" onclick="GPU_train();" hidden>train</button>
+        <div id="GPU_log"></div>
+        <img id="GPU_training_img" src="LeNet/cache/GPU_training.jpg" style="width:256px;height:256px" hidden>
+        <div name="GPU_dropbox" id="GPU_dropbox" style="font-size:30px;color:#333333;background-color:#888888;width:256px;height:256px;border:3px dashed silver;" hidden>
+            <img id="GPU_recog_img" src="cache/LeNet_GPU_recog_.png" style="width:256px;height:256px" alt="拖拽文件识别">
+            <p id="GPU_recog_result"></p>
+        </div>
+    </div>
+    
+</body>
+
+</html>

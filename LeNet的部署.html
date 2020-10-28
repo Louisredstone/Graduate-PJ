@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<title>LeNet在CPU、GPU、FPGA上的分别部署</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="css/elegant-press.css" type="text/css" />
+	<script src="scripts/elegant-press.js" type="text/javascript"></script>
+	<!--[if IE]><style>#header h1 a:hover{font-size:75px;}</style><![endif]-->
+	</head>
+
+
+	<body> 
+
+	<div class="main-container">
+		<div id="nav-container">
+			<nav> 
+			<ul class="nav">
+				<b><li><a href="index.html">主页</a></li></b>
+				<b><li ><a href="研究背景.html">研究背景</a></li></b>
+				<b><li class="active"><a href="LeNet的部署.html"><font color="#FF0000">LeNet的部署</font></a></li></b>
+				<b><li><a href="前端设计.html">前端设计</a></li></b>
+				<b><li><a href="实验结果.html">实验结果</a></li></b>
+				<b><li><a href="总结展望.html">总结展望</a></li></b>
+			</ul>
+			</nav> 
+		<div class="clear"></div>
+		</div>
+	</div>
+
+
+	<div class="main-container">
+		<div class="container1">
+			<br />
+			<br />
+
+			<div class="box">
+				<div class="firsttitle"><h3>LeNet在CPU、GPU、FPGA上的部署</h3></div>
+				<br /> 
+				<ul class="tabs">
+					<li>
+						<input type="radio" checked name="tabs" id="tab1">
+						<label for="tab1">开发环境及工具</label><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br/>
+						<div id="tab-content1" class="tab-content">
+							<div class="animated  fadeInRight"><br/>
+								<!-- <div class="imgc" align="center"><a href="my_imgs/算法设计eesr.png" data-gal="prettyPhoto" title="算法框架"><img src="my_imgs/算法设计eesr.png" width="800"/></a> </div>
+								 -->
+								<img src="my_imgs/python.png" width="150px" height="auto"  style="float:left">
+								<img src="my_imgs/Xilinx.jfif" width="200px" height="auto">
+								<br><br><br><p>本设计主要使用PyTorch和基于C++的HLS语法完成，对HTML、CSS、JavaScript、PHP、Windows BAT脚本语言、bash脚本语言等也有所使用。其中开发环境主要为Xilinx Vitis软件。</p>
+								
+							<div class="clear"></div>
+							<br /><br /><br /><br /><br />
+			 
+							</div>
+						</div>
+								
+					</li>
+					<li>
+						<input type="radio" name="tabs" id="tab2">
+						<label for="tab2">LeNet的结构</label><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br/>
+						<div id="tab-content2" class="tab-content">
+							<div class="animated  fadeInRight"><br/>
+								<div class="imgc" align="center"><a href="my_imgs/LeNet结构.png" data-gal="prettyPhoto" title="算法框架"><img src="my_imgs/LeNet结构.png" width="800"/></a> </div>
+								<p>数据经过两次通道数不同的卷积后，接入两层全连接层，并最终经过一个高斯连接层和maxlabel处理得到最终结果。</p>
+								<!-- <br/><p>生成对抗网络拟合过程</p>
+								<div class="imgc" align="center"><a href="my_imgs/gan.png" data-gal="prettyPhoto" title="算法框架"><img src="my_imgs/gan.png"" width="500"/></a> </div> -->
+								
+							<div class="clear"></div>
+							<br /><br /><br /><br /><br />
+			 
+							</div>
+						</div>
+								
+					</li>
+					
+					<li>
+						<input type="radio" name="tabs" id="tab3">
+						<label for="tab3">在CPU、GPU上的部署</label><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br/><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+						<div id="tab-content3" class="tab-content">
+							<div class="animated  fadeInRight">
+								<br/>
+								<img src="my_imgs/LeNet-CPU-GPU-流程图.png" width="150px" height="auto" style="float:left">
+								<br/><br/>
+								<p>&#160&#160&#160&#160LeNet主要程序训练流程：</p>
+								<p>&#160&#160&#160&#160每次给入1个batch的数据量。每给完一整个数据集，进行一次测试，直到给完epoch次数据集。</p>
+								<br><br>
+								<p>&#160&#160&#160&#160之后添加的功能：</p>
+								<p>&#160&#160&#160&#160 1，以轮询的方式响应HTML页面发送的请求（指令）；</p><p>&#160&#160&#160&#160 2，将每个batch中首张图片作为代表图片存放在文件夹中；</p><p>&#160&#160&#160&#160 3，接受图片输入，识别后输出结果；</p><p>&#160&#160&#160&#160 4，将网络的训练参数以文本形式保存下来以供FPGA核使用。</p>
+							<div class="clear"></div>
+
+							<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+							</div>
+						</div>
+					</li>
+
+					<li>
+						<input type="radio" name="tabs" id="tab4">
+						<label for="tab4">在FPGA上的部署</label><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br/><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+						<div id="tab-content4" class="tab-content">
+							<div>
+								<h6>参数获取</h6>
+								<p>FPGA核所使用的参数可从CPU、GPU的部署程序中获取。获取后存放在不同的文件中，由host程序读取到内存。</p><br/>
+							</div>
+							<hr>
+							<div>
+								<h6>运算结构</h6>
+								</div>
+								<div >
+									<a href="my_imgs/LeNet核结构关系图.png" data-gal="prettyPhoto" title="eesr-gan">
+										<img class="imgl" src="my_imgs/LeNet核结构关系图.png" alt="" width="800"/>
+									</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<br /><br /><br /><br /><br />
+				<div class="clear">
+				<br />
+				</div>	
+			</div>
+			<br /><br /><br />
+		</div>
+	<footer>
+		<!-- <h3 class="tagline_left">Contact:</h3>
+		 <br /><br /><br /> -->
+		<p class="tagline_left">Contact: 16300720049@fudan.edu.cn</p>
+		<br class="clear" />
+	</footer>
+
+	<br /><br />
+	<br /><br />
+	</div>
+	
+	
+	<!-- Free template distributed by http//bestmoban.com -->
+	</body>
+</html>

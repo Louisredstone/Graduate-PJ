@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<head>
+    <script src="../.lib/jquery.js"></script>
+    <style>
+        #dropbox{
+        border : 1px solid black;
+        margin : 10px 20px 30px 40px;
+    }
+    </style>
+    <script>
+        function FPGA_start(){
+            $('#FPGA_log').html("FPGA Device not found.");
+            // $.post("LeNet/LeNet_start.php", {action:"FPGA"}, (data) => {});
+            }
+        function FPGA_stop(){$.post("LeNet/LeNet_stop.php", {action:"FPGA"}, (data) => {});}
+        function FPGA_load(){$.post("LeNet/LeNet_load.php", {action:"FPGA"}, (data) => {});}
+        function FPGA_save(){$.post("LeNet/LeNet_save.php", {action:"FPGA"}, (data) => {});}
+        function FPGA_train(){$.post("LeNet/LeNet_launch_training.php", {action:"FPGA"}, (data) => {});}
+        function FPGA_get_log(){
+            $.post("LeNet/LeNet_get_log.php", {action:"FPGA"}, (data) => {
+                $('#FPGA_log').html(data);
+            });
+        }
+        function FPGA_get_recog_result(){
+            $('#FPGA_recog_img').attr('src',"LeNet/cache/LeNet_FPGA_recog_.png"+"?random="+new Date().getTime());
+        }
+        function FPGA_get_state(){
+            $.post("LeNet/LeNet_get_state.php",{action: "FPGA"}, (data) => {
+                switch(data){
+                    case "training":
+                        $('#FPGA_button').hide();
+                        $("#FPGA_load_from_CPU_button").hide();
+                        $("#FPGA_load_from_GPU_button").hide();
+                        // $("#FPGA_save_button").hide();
+                        // $("#FPGA_train_button").hide();
+                        $("#FPGA_log").show();
+                        // $('#FPGA_training_img').attr('src',"LeNet/cache/FPGA_training.jpg"+"?random="+new Date().getTime());
+                        // $("#FPGA_training_img").show();
+                        $("#FPGA_dropbox").hide();
+                        FPGA_get_log();
+                    break;
+                    case "idle"://running but idle
+                        $('#FPGA_button').show();
+                        $('#FPGA_button').text('stop');
+                        $('#FPGA_button').attr('onclick','FPGA_stop();');
+                        $("#FPGA_load_from_CPU_button").show();
+                        $("#FPGA_load_from_GPU_button").show();
+                        // $("#FPGA_save_button").show();
+                        // $("#FPGA_train_button").show();
+                        $("#FPGA_log").show();
+                        // $("#FPGA_training_img").hide();
+                        $("#FPGA_dropbox").show();
+                        FPGA_get_log();
+                        FPGA_get_recog_result();
+                    break;
+                    case "closed":
+                        $('#FPGA_button').text('start');
+                        $('#FPGA_button').attr('onclick','FPGA_start();');
+                        $("#FPGA_load_from_CPU_button").hide();
+                        $("#FPGA_load_from_GPU_button").hide();
+                        // $("#FPGA_save_button").hide();
+                        // $("#FPGA_train_button").hide();
+                        $("#FPGA_log").hide();
+                        // $("#FPGA_training_img").hide();
+                        $("#FPGA_dropbox").hide();
+                    break;
+                }
+             });
+        }
+        // function checkState(){
+        //     FPGA_get_state();
+        // }
+        $.ajaxSetup({async:true});
+        // checkState();
+        // setInterval(checkState,1000);
+    </script>
+    <script>
+        $(function(){ 
+            //阻止浏览器默认行为。 
+            $(document).on({ 
+                dragleave:function(e){    //拖离 
+                    e.preventDefault(); 
+                }, 
+                drop:function(e){  //拖后放 
+                    e.preventDefault(); 
+                }, 
+                dragenter:function(e){    //拖进 
+                    e.preventDefault(); 
+                }, 
+                dragover:function(e){    //拖来拖去 
+                    e.preventDefault(); 
+                } 
+            }); 
+
+            // var box = document.getElementById('dropbox'); //拖拽区域 
+
+            document.getElementById('FPGA_dropbox').addEventListener("drop",function(e){ //此处不能用jQuery的$('#...')，addEventListener不兼容。
+                e.preventDefault(); //取消默认浏览器拖拽效果 
+                var fileList = e.dataTransfer.files; //获取文件对象 
+                //检测是否是拖拽文件到页面的操作 
+                if(fileList.length == 0){ 
+                    return false; 
+                } else if(fileList.length > 1){// 可能会一堆图一起拖过来
+                    alert("one picture a time!");
+                    return false;
+                }
+                var form = new FormData();
+                form.append("file", fileList[0]); 
+                // form.append("type","FPGA");
+                $.ajax({
+                    url: 'LeNet/LeNet_fig_receiver_FPGA.php',
+                    type: 'POST',
+                    cache: false,
+                    data: form,
+                    processData: false,
+                    contentType: false
+                }).done(function(res) {//FPGA_recog();
+                }).fail(function(res) {//alert("fail");
+                });
+            },false); 
+        }); 
+    </script>
+</head>
+
+<body>
+    <h3>LeNet FPGA</h3>
+    <div style="width:100%;float:left">
+        <button type="button" id="FPGA_button" onclick="FPGA_start();">start</button><br>
+        <button type="button" id="FPGA_load_from_CPU_button" onclick="FPGA_load();" hidden>load from CPU</button><br>
+        <button type="button" id="FPGA_load_from_GPU_button" onclick="FPGA_load();" hidden>load from GPU</button><br>
+        <!-- <button type="button" id="FPGA_save_button" onclick="FPGA_save();" hidden>save</button><br> -->
+        <!-- <button type="button" id="FPGA_train_button" onclick="FPGA_train();" hidden>train</button> -->
+        <div id="FPGA_log"></div>
+        <!-- <img id="FPGA_training_img" src="LeNet/cache/FPGA_training.jpg" style="width:256px;height:256px" hidden> -->
+        <div name="FPGA_dropbox" id="FPGA_dropbox" style="font-size:30px;color:#333333;background-color:#888888;width:256px;height:256px;border:3px dashed silver;" hidden>
+            <img id="FPGA_recog_img" src="cache/LeNet_FPGA_recog_.png" style="width:256px;height:256px" alt="拖拽文件识别">
+            <p id="FPGA_recog_result"></p>
+        </div>
+    </div>
+
+</body>
+
+</html>

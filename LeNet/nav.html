@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            html,body{
+                margin:0px;
+                padding:0px;
+            }
+            .container{
+                margin:0px;
+                padding:0px;
+                float:left;
+                width:33.3330%;
+                height:50px;
+            }
+            .hrefButton{
+                display:block;
+                text-align:center;
+                text-decoration:none;
+                line-height:50px;
+                font-family:Georgia,"Fira Code";
+                font-size:20px;
+                width:100%;
+                height:100%;
+                background-color:turquoise;
+                outline-style:solid;
+                outline-color:white;
+            }
+            </style>
+            <script>
+                function hrefButtonTurnTurquoise(){
+                    var eles=document.getElementsByClassName("hrefButton");
+                    var i;
+                    for(i=0;i<eles.length;i++){
+                        var e=eles[i];
+                        e.style.background="turquoise";
+                    }
+                }
+            </script>
+    </head>
+<body>
+<div class="container"><a class="hrefButton" style="background-color:white" onclick="hrefButtonTurnTurquoise();this.style.background='white'" href="pages/主页.html" target="content">主页</a></div>
+<div class="container"><a class="hrefButton" onclick="hrefButtonTurnTurquoise();this.style.background='white'" href="pages/任务视窗.html" target="content">任务视窗</a></div>
+<div class="container"><a class="hrefButton" onclick="hrefButtonTurnTurquoise();this.style.background='white'" href="pages/shell.html" target="content">shell</a></div>
+</body>
+
+</html>

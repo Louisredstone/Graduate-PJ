@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>总结展望</title> 
+		<meta charset="utf-8" /> 
+		<link rel="stylesheet" href="css/elegant-press.css" type="text/css" /> 
+		<script src="scripts/elegant-press.js" type="text/javascript"></script>
+		<script src="scripts/bundle.js" type="text/javascript"></script> 
+	</head> 
+
+	<body> 
+	<div class="main-container">
+		<div id="nav-container">
+			<nav> 
+			<ul class="nav">
+				<b><li><a href="index.html">主页</a></li></b>
+				<b><li ><a href="研究背景.html">研究背景</a></li></b>
+				<b><li><a href="LeNet的部署.html">LeNet的部署</a></li></b>
+				<b><li><a href="前端设计.html">前端设计</a></li></b>
+				<b><li><a href="实验结果.html">实验结果</a></li></b>
+				<b><li class="active"><a href="总结展望.html"><font color="#FF0000">总结展望</font></a></li></b>
+			</ul>
+			</nav> 
+		<div class="clear"></div>
+		</div>
+	</div>
+
+
+	<!--********************************************************************************-->
+	<div class="main-container">
+	<div class="container1">
+	<br />
+	<br />
+
+	<div class="box">
+		<div class="firsttitle"><h3>实验总结</h3></div>
+
+			  
+		<div class="container2">
+			<br/>
+			<div class="middlebox1">
+				<div class="secondtitle"><h6>网络部署</h6></div>
+				<ul id="list1">
+					<li>CPU、GPU、FPGA三个版本的LeNet程序识别精度均达到正常水平</li> 
+					<li>FPGA核的加速效果不够理想，仍有很大提升空间</li>
+				</ul>
+			</div>
+			
+			<div class="middlebox2">
+				<div class="secondtitle"><h6>监测页面</h6></div>
+				<ul id="list1">
+					<li>实现了部署程序的状态监测和log显示</li> 
+					<li>实现了与部署程序的交互</li>
+					<li>实现了图片文件拖拽识别功能</li>
+					<br><br>
+				</ul>
+			</div>	
+		</div>
+		
+		
+		<div class="firsttitle"><h3>工作展望</h3></div>
+			  
+		<div class="container2">
+			<br/>
+			<div class="middlebox1">
+				<div class="secondtitle"><h6>FPGA核存在的问题</h6></div>
+				<ul id="list1">
+					<li>循环展开不足，响应速度仍不够快</li> 
+					<li>量化误差导致识别精度略有下降，可考虑修改网络以克服</li>
+				</ul>
+			</div>
+			
+			<div class="middlebox2">
+				<div class="secondtitle"><h6>下阶段工作</h6></div>
+				<ul id="list1">
+					<li>充分展开循环，并对器件消耗数量进行权衡，必要时可改用流水线。</li> 
+					<li>添加其他网络的支持，或实现在HTML页面中进行网络设计并部署的功能。</li>
+					<li>平台可移植性优化。</li>
+					<li>实现进程间通信</li>
+					<li>……</li>
+				</ul>
+			</div>	
+		</div>
+		<div class="clear"></div>
+		
+		</div>
+		<br/><br/><br/>
+		<div class="box">
+			<h5>参考文献</h5>
+			<p>[1]https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/
+				<br>[2]Brodtkorb A R, Dyken C, Hagen T R, et al. State-of-the-art in heterogeneous computing[J]. Scientific Programming, 2010, 18(1): 1-33.
+				<br>[3]Caulfield A M, Chung E S, Putnam A, et al. A cloud-scale acceleration architecture[C]//2016 49th Annual IEEE/ACM International Symposium on Microarchitecture (MICRO). IEEE, 2016: 1-13.
+				<br>[4]Robert H N. Theory of the backpropagation neural network[J]. Proc. 1989 IEEE IJCNN, 1989, 1: 593-605.
+				<br>[5]Goodfellow I, Bengio Y, Courville A. Deep learning[M]. MIT press, 2016.
+				<br>[6]Gaster, B., Howes, L., Kaeli, D. R., Mistry, P., & Schaa, D. (2012). Heterogeneous computing with openCL: revised openCL 1. Newnes.
+				<br>[7]王风盼. 基于深度学习的手写数字识别方法研究[D].重庆大学,2018.
+				<br>[8]鲍云峰. 基于异构计算系统的卷积神经网络应用研究[D].湖北大学,2018.
+				<br>[9]刘辰雨. 基于卷积神经网络的手写数字识别研究与设计[D].成都理工大学,2018.
+				<br>[10]李倩倩. 基于深度学习的手写体数字序列的识别研究[D].哈尔滨工程大学,2018.
+				<br>[11]Wu L, Zhu Z. Towards understanding generalization of deep learning: Perspective of loss landscapes[J]. arXiv preprint arXiv:1706.10239, 2017.
+			</p>
+		</div
+	</div>
+	
+	<div class="clear">
+	<br /><br /><br />
+	</div>
+
+
+
+	<footer>
+		<!-- <h3 class="tagline_left">Contact:</h3>
+		 <br /><br /><br /> -->
+		<p class="tagline_left">Contact: 16300720049@fudan.edu.cn</p>
+		<br class="clear" />
+	</footer>
+
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<!-- Free template distributed by http//bestmoban.com -->
+	</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<head>
+    <script src="../.lib/jquery.js"></script>
+    <script>
+        function CPU_start(){$.post("LeNet/LeNet_start.php", {action:"CPU"}, (data) => {});}
+        function CPU_stop(){$.post("LeNet/LeNet_stop.php", {action:"CPU"}, (data) => {});}
+        function CPU_load(){$.post("LeNet/LeNet_load.php", {action:"CPU"}, (data) => {});}
+        function CPU_save(){$.post("LeNet/LeNet_save.php", {action:"CPU"}, (data) => {});}
+        function CPU_train(){$.post("LeNet/LeNet_launch_training.php", {action:"CPU"}, (data) => {});}
+        function CPU_get_log(){
+            $.post("LeNet/LeNet_get_log.php", {action:"CPU"}, (data) => {
+                $('#CPU_log').html(data);
+            });
+        }
+        function CPU_get_state(){
+            $.post("LeNet/LeNet_get_state.php",{action: "CPU"}, (data) => {
+                switch(data){
+                    case "training":
+                        $('#CPU_button').hide();
+                        $("#CPU_load_button").hide();
+                        $("#CPU_save_button").hide();
+                        $("#CPU_train_button").hide();
+                        $("#CPU_log").show();
+                        $('#CPU_training_img').attr('src',"LeNet/cache/CPU_training.jpg"+"?random="+new Date().getTime());
+                        $("#CPU_training_img").show();
+                        CPU_get_log();
+                    break;
+                    case "idle"://running but idle
+                        $('#CPU_button').show();
+                        $('#CPU_button').text('停止CPU部署');
+                        $('#CPU_button').attr('onclick','CPU_stop();');
+                        $("#CPU_load_button").show();
+                        $("#CPU_save_button").show();
+                        $("#CPU_train_button").show();
+                        $("#CPU_log").show();
+                        $("#CPU_training_img").hide();
+                        CPU_get_log();
+                    break;
+                    case "closed":
+                        $('#CPU_button').text('开始CPU部署');
+                        $('#CPU_button').attr('onclick','CPU_start();');
+                        $("#CPU_load_button").hide();
+                        $("#CPU_save_button").hide();
+                        $("#CPU_train_button").hide();
+                        $("#CPU_log").hide();
+                        $("#CPU_training_img").hide();
+                    break;
+                }
+             });
+        }
+        function GPU_start(){$.post("LeNet/LeNet_start.php", {action:"GPU"}, (data) => {});}
+        function GPU_stop(){$.post("LeNet/LeNet_stop.php", {action:"GPU"}, (data) => {});}
+        function GPU_load(){$.post("LeNet/LeNet_load.php", {action:"GPU"}, (data) => {});}
+        function GPU_save(){$.post("LeNet/LeNet_save.php", {action:"GPU"}, (data) => {});}
+        function GPU_train(){$.post("LeNet/LeNet_launch_training.php", {action:"GPU"}, (data) => {});}
+        function GPU_get_log(){
+            $.post("LeNet/LeNet_get_log.php", {action:"GPU"}, (data) => {
+                $('#GPU_log').html(data);
+            });
+        }
+        function GPU_get_state(){
+            $.post("LeNet/LeNet_get_state.php",{action: "GPU"}, (data) => {
+                switch(data){
+                    case "training":
+                        $('#GPU_button').hide();
+                        $("#GPU_load_button").hide();
+                        $("#GPU_save_button").hide();
+                        $("#GPU_train_button").hide();
+                        $("#GPU_log").show();
+                        $('#GPU_training_img').attr('src',"LeNet/cache/GPU_training.jpg"+"?random="+new Date().getTime());
+                        $("#GPU_training_img").show();
+                        GPU_get_log();
+                    break;
+                    case "idle"://running but idle
+                        $('#GPU_button').show();
+                        $('#GPU_button').text('停止GPU部署');
+                        $('#GPU_button').attr('onclick','GPU_stop();');
+                        $("#GPU_load_button").show();
+                        $("#GPU_save_button").show();
+                        $("#GPU_train_button").show();
+                        $("#GPU_log").show();
+                        $("#GPU_training_img").hide();
+                        GPU_get_log();
+                    break;
+                    case "closed":
+                        $('#GPU_button').text('开始GPU部署');
+                        $('#GPU_button').attr('onclick','GPU_start();');
+                        $("#GPU_load_button").hide();
+                        $("#GPU_save_button").hide();
+                        $("#GPU_train_button").hide();
+                        $("#GPU_log").hide();
+                        $("#GPU_training_img").hide();
+                    break;
+                }
+             });
+        }
+        function checkState(){
+            CPU_get_state();
+            GPU_get_state();
+        }
+        $.ajaxSetup({async:true});
+        checkState();
+        setInterval(checkState,1000);
+    </script>
+</head>
+
+<body>
+    <div>   
+        <h1>LeNet</h1><br>
+        <div style="width:33%;float:left">
+            <button type="button" id="CPU_button" onclick="CPU_start();">开始CPU部署</button><br>
+            <button type="button" id="CPU_load_button" onclick="CPU_load();" hidden>load</button><br>
+            <button type="button" id="CPU_save_button" onclick="CPU_save();" hidden>save</button><br>
+            <button type="button" id="CPU_train_button" onclick="CPU_train();" hidden>train</button>
+            <div id="CPU_log"></div>
+            <img id="CPU_training_img" src="LeNet/cache/CPU_training.jpg" hidden>
+        </div>
+        <div style="width:33%;float:left">
+            <button type="button" id="GPU_button" onclick="GPU_start();">开始GPU部署</button><br>
+            <button type="button" id="GPU_load_button" onclick="GPU_load();" hidden>load</button><br>
+            <button type="button" id="GPU_save_button" onclick="GPU_save();" hidden>save</button><br>
+            <button type="button" id="GPU_train_button" onclick="GPU_train();" hidden>train</button>
+            <div id="GPU_log"></div>
+            <img id="GPU_training_img" src="LeNet/cache/GPU_training.jpg" hidden>
+        </div>
+        <div style="width:33%;float:left">
+            <button type="button" id="FPGA_button" onclick="FPGA_start();">开始FPGA部署</button>
+            <div id="FPGA_log"></div>
+        </div>
+
+    <div id="output"></div>
+</body>
+
+</html>
